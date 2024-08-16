@@ -1,0 +1,34 @@
+To run these files follow this list
+1. Connect to the jetautopro robot through nomachine - username-jetauto password-hiwonder
+2. Run sudo systemctl stop start_app_service (just type start and press tab)
+3. Run roslaunch jetauto_peripherals usb_cam.launch
+roslaunch jetauto_peripherals usb_cam.launch
+4. Run roslaunch jetauto_moveit_config  and do demo.launch with fake_execution:=false (this runs the real lif robot and not just the simulation)
+roslaunch jetauto_moveit_config demo.launch fake_execution:=false
+5. Configure .bashrc to 
+export ROS_IP=$(hostname -I | awk '{print $1;}')
+export ROS_HOSTNAME=$ROS_IP
+export ROS_MASTER_URI=http://192.168.149.1:11311
+
+6. The setup should be done.
+
+Teleop runs the controller and will move the robotic arm with each XBOX CONTROLLER joystick movement. For more info look at the joint_states_save.py file for all the movements
+
+Joint_states_save.py will save a picture to the local file directory and save data into a csv containing the picture path, the action taken from the controller, and the joint state for all 5 joints.
+
+fullArm vs fullDemo
+fullArm will only use the actions and pictures to run the machine learning model and not use the joint states.
+fullDemo with use the pictures and joint states for the inputs into the model and output the action.
+
+FullDemo will have the comments to the code because they are both very similar and fullArm has a little less code than fullDemo because it doesn't use the joint states.
+
+How to setup data collection
+The the red block should be placed in the field of view of the camera before the robot is in its starting position.
+The black foam block should be placed at the center of the robot but in front of it a little bit before starting position.
+The robot will automatically move to its starting position before data collection.
+
+The steps used for data collection was to move the arm to a place where the camera could see the red block and to pick it up first.
+Then move the red block back to its starting position and then move it to the black foam after returning to center. (we did this so it would go back before looking for a place (someitimes targeted its own wheel))
+Then end the program after the block is dropped on the black foam.
+
+
